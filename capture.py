@@ -20,15 +20,14 @@ class RECT(ctypes.Structure):
     def __str__(self):
         return str((self.left, self.top, self.right, self.bottom))
 
-def capture_window():
+def capture_window(HWND):
     rect = RECT()
-    HWND = win32gui.GetForegroundWindow()
     ctypes.windll.user32.GetWindowRect(HWND,ctypes.byref(rect))
     rangle = (rect.left,rect.top,rect.right,rect.bottom)
     img = ImageGrab.grab(rangle)
-    img.save('test.bmp', "BMP")
-
+    return img
 
 if __name__ == '__main__':
-    capture_window()
+    HWND = win32gui.GetForegroundWindow()
+    capture_window(HWND)
 
