@@ -7,6 +7,14 @@ import sys
 def reco(fp, weight='normal'):
     return model.models.get(weight).get(fp, ' ')
 
+def recofull(img, weight='normal'):
+    fps = gen_model.get_fingerprint(img, weight)
+    text = []
+    for fp in fps:
+        text.append(reco(fp, weight))
+    return ''.join(text)
+
+
 if __name__ == '__main__':
     ## usage
     # python ocr.py img.bmp [bold|normal]
@@ -18,10 +26,4 @@ if __name__ == '__main__':
     else:
         weight = sys.argv[2]
 
-    fps = gen_model.get_fingerprint(img, weight)
-
-    text = []
-    for fp in fps:
-        text.append(reco(fp, weight))
-    print ''.join(text)
-
+    print recofull(img, weight)
