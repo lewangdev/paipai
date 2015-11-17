@@ -2,3 +2,5 @@
 *.swp
 *.pyc
 .DS_Store
+*.exe
+*.msi
