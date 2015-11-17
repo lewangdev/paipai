@@ -11,8 +11,8 @@ def get_data(filename):
             csv_row = []
             x.append(int(row['system_time'][-2:]))
             y.append(row['lowest_price'])
-    x = x[-60:]
-    y = y[-60:]
+    x = x[-45:]
+    y = y[-45:]
     return x, y
 
 i = 0
