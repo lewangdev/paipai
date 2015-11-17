@@ -53,12 +53,12 @@ if __name__ == '__main__':
     #print arr_normal
     #print arr_bold
     chars = list('1234567890-:')
-    normal = get_fingerprint('normal.bmp')
+    normal = get_fingerprint('trainning/normal.bmp')
     normal_dict = {}
     for i in xrange(12):
         normal_dict[normal[i]] = chars[i]
 
-    bold = get_fingerprint('bold.bmp', weight='bold')
+    bold = get_fingerprint('trainning/bold.bmp', weight='bold')
     bold_dict = {}
     for i in xrange(12):
         bold_dict[bold[i]] = chars[i]
