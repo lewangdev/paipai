@@ -20,12 +20,25 @@ class RECT(ctypes.Structure):
     def __str__(self):
         return str((self.left, self.top, self.right, self.bottom))
 
-def capture_window(HWND):
+def get_window_rect(hwnd):
     rect = RECT()
-    ctypes.windll.user32.GetWindowRect(HWND,ctypes.byref(rect))
-    rangle = (rect.left,rect.top,rect.right,rect.bottom)
-    img = ImageGrab.grab(rangle)
+    ctypes.windll.user32.GetWindowRect(hwnd, ctypes.byref(rect))
+    return rect
+
+def capture_window(hwnd):
+    '''指定窗口截图
+    '''
+    rect = get_window_rect(hwnd)
+    rectangle = (rect.left,rect.top,rect.right,rect.bottom)
+    img = ImageGrab.grab(rectangle)
     return img
+
+def capture_rect(rectangle):
+    '''指定区域截图
+    '''
+    img = ImageGrab.grab(rectangle)
+    return img
+
 
 if __name__ == '__main__':
     HWND = win32gui.GetForegroundWindow()
