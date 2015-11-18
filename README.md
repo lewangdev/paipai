@@ -8,6 +8,12 @@ README
 * CMD 中执行 easy_install pillow
 * 安装 pywin32
 
+## release 步骤
+
+* 安装 pyinstaller
+* build/buildwin32.bat
+* [-]字节码压缩和混淆
+
 ## TODO
 
 * 根据坐标截取关键数据的截图
