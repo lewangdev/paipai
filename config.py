@@ -11,4 +11,4 @@ input_pos = {
         "custom_price":(),
         "check_code":()}
 
-capture_pos = {'price_accepted': (158, 341), 'system_time': (130, 326), 'plate_limit': (130, 221), 'time_price_accepted': (186, 356), 'participant_count': (144, 236)}
+capture_pos = {'price_accepted': (153, 404), 'system_time': (126, 388), 'plate_limit': (126, 282), 'time_price_accepted': (179, 419), 'participant_count': (140, 297)}

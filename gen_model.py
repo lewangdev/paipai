@@ -16,10 +16,10 @@ def get_pixel_string(font, weight='normal'):
             row = []
             for x in xrange(idx * options[weight], (idx + 1) * options[weight]):
                 r, g, b = pixdata[x, y]
-                if r and g == 0:
-                    row.append('1')
-                else:
+                if r - g == 0:
                     row.append('0')
+                else:
+                    row.append('1')
             bin_str = ''.join(row)
             irow = int(bin_str, 2)
             char.append(irow)
@@ -27,9 +27,9 @@ def get_pixel_string(font, weight='normal'):
 
     return model
 
-def get_fingerprint(font, weight='normal'):
+def get_fingerprint(img, weight='normal'):
     options = dict(normal=7, bold=8)
-    img = Image.open(font)
+    #img = Image.open(font)
     width, height = img.size
     pixdata = img.load()
 
@@ -39,10 +39,10 @@ def get_fingerprint(font, weight='normal'):
         for y in xrange(height):
             for x in xrange(idx * options[weight], (idx + 1) * options[weight]):
                 r, g, b = pixdata[x, y]
-                if r and g == 0:
-                    char.append('1')
-                else:
+                if r == g:
                     char.append('0')
+                else:
+                    char.append('1')
         chars.append(''.join(char))
 
     return chars
@@ -53,12 +53,12 @@ if __name__ == '__main__':
     #print arr_normal
     #print arr_bold
     chars = list('1234567890-:')
-    normal = get_fingerprint('trainning/normal.bmp')
+    normal = get_fingerprint(Image.open('trainning/normal.bmp'))
     normal_dict = {}
     for i in xrange(12):
         normal_dict[normal[i]] = chars[i]
 
-    bold = get_fingerprint('trainning/bold.bmp', weight='bold')
+    bold = get_fingerprint(Image.open('trainning/bold.bmp'), weight='bold')
     bold_dict = {}
     for i in xrange(12):
         bold_dict[bold[i]] = chars[i]

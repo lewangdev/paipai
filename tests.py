@@ -1,5 +1,6 @@
 #coding=utf8
 import ocr
+from PIL import Image
 
 import unittest
 
@@ -17,7 +18,7 @@ class TestOcr(unittest.TestCase):
 
         for t in files:
             f, expected, w = t
-            actual = ocr.recofull(prefix % f, w)
+            actual = ocr.recofull(Image.open(prefix % f), w)
             self.assertEqual(actual, expected)
 
 if __name__ == '__main__':

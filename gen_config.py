@@ -30,13 +30,13 @@ nw=7
 bw=8
 
 capture_width= 19 * bw
-capture_offset = (39, 206)
+capture_offset = (32, 267)
 capture_pos_offset = dict(
-        plate_limit=(6 * hw + nw, hh + mb),
-        participant_count=(7 * hw + nw, 2 * (hh + mb)),
-        system_time=(6 * hw + nw, 8 * (hh + mb)),
-        price_accepted=(8 * hw + nw, 9 * (hh + mb)),
-        time_price_accepted=(10 * hw + nw, 10 * (hh + mb)))
+        plate_limit=(6 * hw + nw + 3, hh + mb),
+        participant_count=(7 * hw + nw + 3, 2 * (hh + mb)),
+        system_time=(6 * hw + nw + 3, 8 * (hh + mb) + 1),
+        price_accepted=(8 * hw + nw + 2, 9 * (hh + mb) + 2),
+        time_price_accepted=(10 * hw + nw, 10 * (hh + mb) + 2))
 
 
 if __name__ == '__main__':
