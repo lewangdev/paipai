@@ -2,5 +2,5 @@
 *.swp
 *.pyc
 .DS_Store
-*.exe
-*.msi
+*.spec
+build/build/
