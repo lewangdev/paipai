@@ -2,6 +2,19 @@
 
 from PIL import Image
 
+def bw(img):
+    '''转成黑白色
+    '''
+    img = img.convert('L')
+    w,h = img.size
+    for x in xrange(w):
+        for y in xrange(h):
+            if (img.getpixel((x,y)) > 200):
+                img.putpixel((x,y), 0xFF)
+            else:
+                img.putpixel((x,y), 0)
+    return img
+
 def crop(img):
     '''裁剪到包括所有非FF色的最小矩形
     '''
@@ -13,8 +26,8 @@ def crop(img):
         left = x
         stop = False
         for y in xrange(h):
-            r,g,b = pixdata[x, y]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[x, y]
+            if r != 0xFF:
                 stop = True
                 break
         if stop:
@@ -25,8 +38,8 @@ def crop(img):
         top = y
         stop = False
         for x in xrange(w):
-            r,g,b = pixdata[x, y]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[x, y]
+            if r != 0xFF:
                 stop = True
                 break
         if stop:
@@ -37,8 +50,8 @@ def crop(img):
         right = x
         stop = False
         for y in xrange(h):
-            r,g,b = pixdata[x, y]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[x, y]
+            if r != 0xFF:
                 stop = True
                 break
         if stop or right <= left:
@@ -49,8 +62,8 @@ def crop(img):
         bottom = y
         stop = False
         for x in xrange(w):
-            r,g,b = pixdata[x, y]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[x, y]
+            if r != 0xFF:
                 stop = True
                 break
         if stop or bottom <= top:
@@ -67,13 +80,11 @@ def split(img):
     # 降为1维，如果这一列上全部都是FF，则记为 False, 表示空白列
     mask = []
     for x in xrange(w):
-        right = x
         colorful = False
         for y in xrange(h):
-            r,g,b = pixdata[x, y]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[x, y]
+            if r != 0xFF:
                 colorful = True
-                break
         mask.append(colorful)
 
     # 寻找连续的色块
@@ -94,9 +105,10 @@ def split(img):
             if not mask[right]:
                 break
             right += 1
-        p = img.crop((left, top, right, bottom))
-        p = crop(p)
-        pieces.append(p)
+        if right > left:
+            p = img.crop((left, top, right, bottom))
+            p = crop(p)
+            pieces.append(p)
 
         left = right
 
@@ -112,8 +124,8 @@ def get_martix(img):
     for x in xrange(h):
         row = []
         for y in xrange(w):
-            r,g,b = pixdata[y, x]
-            if r != 0xFF or g != 0xFF or b != 0xFF:
+            r = pixdata[y, x]
+            if r != 0xFF:
                 row.append('1')
             else:
                 row.append('0')
@@ -125,9 +137,18 @@ def get_fingerprint(img):
     return "".join(matrix)
 
 if __name__ == '__main__':
+    #oimg = Image.open('trainning/t1.bmp')
+    #oimg = crop(oimg)
+    #oimg = bw(oimg)
+    #pieces = split(oimg)
+    #i = 0
+    #for p in pieces:
+    #    p.save("%s.bmp" % i, "BMP")
+    #    i += 1
     chars = list("1234567890-:")
     oimg = Image.open('trainning/normal.bmp')
     oimg = crop(oimg)
+    oimg = bw(oimg)
     pieces = split(oimg)
     i = 0
     model = {}
@@ -137,6 +158,7 @@ if __name__ == '__main__':
         i += 1
     oimg = Image.open('trainning/bold.bmp')
     oimg = crop(oimg)
+    oimg = bw(oimg)
     pieces = split(oimg)
     i = 0
     for p in pieces:

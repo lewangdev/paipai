@@ -10,6 +10,7 @@ def reco(fp):
 def recofull(img):
     text = []
     img = gen_model.crop(img)
+    img = gen_model.bw(img)
     pieces = gen_model.split(img)
     for p in pieces:
         fp = gen_model.get_fingerprint(p)
