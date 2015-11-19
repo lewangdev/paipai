@@ -10,7 +10,7 @@ import ocr
 
 
 if __name__ == '__main__':
-    url = 'http://moni.51hupai.com:8081/'
+    url = 'http://aluckyapple-paipai.daoapp.io/'
     ie = browser.open(url)
 
     # wait until stateready
