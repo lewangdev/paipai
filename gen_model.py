@@ -2,65 +2,146 @@
 
 from PIL import Image
 
-
-def get_pixel_string(font, weight='normal'):
-    options = dict(normal=7, bold=8)
-    img = Image.open(font)
-    width, height = img.size
+def crop(img):
+    '''裁剪到包括所有非FF色的最小矩形
+    '''
+    w, h = img.size
     pixdata = img.load()
 
-    model = []
-    for idx in xrange(width/options[weight]):
-        char = []
-        for y in xrange(height):
-            row = []
-            for x in xrange(idx * options[weight], (idx + 1) * options[weight]):
-                r, g, b = pixdata[x, y]
-                if r - g == 0:
-                    row.append('0')
-                else:
-                    row.append('1')
-            bin_str = ''.join(row)
-            irow = int(bin_str, 2)
-            char.append(irow)
-        model.append(char)
+    left = 0
+    for x in xrange(w):
+        left = x
+        stop = False
+        for y in xrange(h):
+            r,g,b = pixdata[x, y]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                stop = True
+                break
+        if stop:
+            break
 
-    return model
+    top = 0
+    for y in xrange(h):
+        top = y
+        stop = False
+        for x in xrange(w):
+            r,g,b = pixdata[x, y]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                stop = True
+                break
+        if stop:
+            break
 
-def get_fingerprint(img, weight='normal'):
-    options = dict(normal=7, bold=8)
-    #img = Image.open(font)
-    width, height = img.size
+    right = w - 1
+    for x in xrange(w - 1, -1, -1):
+        right = x
+        stop = False
+        for y in xrange(h):
+            r,g,b = pixdata[x, y]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                stop = True
+                break
+        if stop or right <= left:
+            break
+
+    bottom = h - 1
+    for y in xrange(h - 1, -1, -1):
+        bottom = y
+        stop = False
+        for x in xrange(w):
+            r,g,b = pixdata[x, y]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                stop = True
+                break
+        if stop or bottom <= top:
+            break
+
+    return img.crop((left, top, right + 1, bottom + 1))
+
+
+def split(img):
+    w, h = img.size
     pixdata = img.load()
 
-    chars = []
-    for idx in xrange(width/options[weight]):
-        char = []
-        for y in xrange(height):
-            for x in xrange(idx * options[weight], (idx + 1) * options[weight]):
-                r, g, b = pixdata[x, y]
-                if r == g:
-                    char.append('0')
-                else:
-                    char.append('1')
-        chars.append(''.join(char))
 
-    return chars
+    # 降为1维，如果这一列上全部都是FF，则记为 False, 表示空白列
+    mask = []
+    for x in xrange(w):
+        right = x
+        colorful = False
+        for y in xrange(h):
+            r,g,b = pixdata[x, y]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                colorful = True
+                break
+        mask.append(colorful)
+
+    # 寻找连续的色块
+    pieces = []
+    top = 0
+    bottom = h
+    left = 0
+    right = 0
+
+    while True:
+        while left < w:
+            if mask[left]:
+                break;
+            left += 1
+
+        right = left
+        while right < w:
+            if not mask[right]:
+                break
+            right += 1
+        p = img.crop((left, top, right, bottom))
+        p = crop(p)
+        pieces.append(p)
+
+        left = right
+
+        if left == w or right == w:
+            break
+
+    return pieces
+
+def get_martix(img):
+    w, h = img.size
+    pixdata = img.load()
+    matrix = []
+    for x in xrange(h):
+        row = []
+        for y in xrange(w):
+            r,g,b = pixdata[y, x]
+            if r != 0xFF or g != 0xFF or b != 0xFF:
+                row.append('1')
+            else:
+                row.append('0')
+        matrix.append(''.join(row))
+    return matrix
+
+def get_fingerprint(img):
+    matrix = get_martix(img)
+    return "".join(matrix)
 
 if __name__ == '__main__':
-    #arr_normal = get_pixel_string('normal.bmp')
-    #arr_bold = get_pixel_string('bold.bmp', weight='bold')
-    #print arr_normal
-    #print arr_bold
-    chars = list('1234567890-:')
-    normal = get_fingerprint(Image.open('trainning/normal.bmp'))
-    normal_dict = {}
-    for i in xrange(12):
-        normal_dict[normal[i]] = chars[i]
+    chars = list("1234567890-:")
+    oimg = Image.open('trainning/normal.bmp')
+    oimg = crop(oimg)
+    pieces = split(oimg)
+    i = 0
+    model = {}
+    for p in pieces:
+        fp = get_fingerprint(p)
+        model[fp] = chars[i]
+        i += 1
+    oimg = Image.open('trainning/bold.bmp')
+    oimg = crop(oimg)
+    pieces = split(oimg)
+    i = 0
+    for p in pieces:
+        fp = get_fingerprint(p)
+        model[fp] = chars[i]
+        i += 1
 
-    bold = get_fingerprint(Image.open('trainning/bold.bmp'), weight='bold')
-    bold_dict = {}
-    for i in xrange(12):
-        bold_dict[bold[i]] = chars[i]
-    print normal_dict
-    print bold_dict
+    print model
