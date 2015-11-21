@@ -11,4 +11,9 @@ input_pos = {
         "custom_price":(),
         "check_code":()}
 
-capture_pos = {'price_accepted': (153, 404), 'system_time': (126, 388), 'plate_limit': (126, 282), 'time_price_accepted': (179, 419), 'participant_count': (140, 297)}
+capture_pos = dict(
+        plate_limit=(131, 273),
+        participant_count=(159, 288),
+        system_time=(145, 385),
+        price_accepted=(173, 401),
+        time_price_accepted=(201, 417))

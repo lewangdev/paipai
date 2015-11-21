@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # wait until stateready
     time.sleep(5)
     img = capture.capture_window(ie.HWND)
-    img.save('ie.bmp', 'BMP')
+    #img.save('ie.bmp', 'BMP')
 
     rect=capture.get_window_rect(ie.HWND)
     for k,v in config.capture_pos.items():
@@ -27,4 +27,4 @@ if __name__ == '__main__':
         print ocr.recofull(img)
 
     time.sleep(5)
-    ie.Quit()
+    #ie.Quit()
