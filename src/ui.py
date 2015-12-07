@@ -34,7 +34,7 @@ class EntryPanel ( wx.Panel ):
 		self.m_button_test = wx.Button( self, wx.ID_ANY, u"仿真模拟(拍牌前勤加练习)", wx.DefaultPosition, wx.Size( 200,50 ), 0 )
 		self.m_button_test.SetMinSize( wx.Size( 200,50 ) )
 		
-		sbSizer6.Add( self.m_button_test, 0, wx.ALL, 5 )
+		sbSizer6.Add( self.m_button_test, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.m_button_bid = wx.Button( self, wx.ID_ANY, u"正式投标(拍牌当天使用)", wx.DefaultPosition, wx.Size( 200,50 ), 0 )
 		sbSizer6.Add( self.m_button_bid, 1, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.EXPAND, 5 )
@@ -182,7 +182,7 @@ class StatePanel ( wx.Panel ):
 class MainPanel ( wx.Panel ):
 	
 	def __init__( self, parent ):
-		wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 365,460 ), style = wx.TAB_TRAVERSAL )
+		wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 365,473 ), style = wx.TAB_TRAVERSAL )
 		
 		bSizer6 = wx.BoxSizer( wx.VERTICAL )
 		
