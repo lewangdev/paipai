@@ -1,6 +1,7 @@
 *.tmp
 *.swp
 *.pyc
+*.exe
 .DS_Store
 *.spec
 build/build/
