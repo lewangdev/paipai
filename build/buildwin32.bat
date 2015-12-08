@@ -1,4 +1,5 @@
 pyinstaller ../src/app.py ^
+    --name=assistant ^
     --noconsole^
     --onefile ^
     --distpath=../dist ^

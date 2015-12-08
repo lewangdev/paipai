@@ -3,11 +3,18 @@
 import ui
 import wx
 
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 class Frame(wx.Frame):
     def __init__(self, parent, title, size):
         wx.Frame.__init__(self, parent, title=title, size=size,
                 style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX)
-        ico = wx.Icon('paipai.ico', wx.BITMAP_TYPE_ICO)
+        ico = wx.Icon(resource_path('resources/paipai.ico'), wx.BITMAP_TYPE_ICO)
         self.SetIcon(ico)
 
 class App(wx.App):
