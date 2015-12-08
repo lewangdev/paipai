@@ -4,3 +4,4 @@
 *.exe
 .DS_Store
 build/build/
+.idea/
