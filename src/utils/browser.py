@@ -39,5 +39,5 @@ def open_ie(url, size=(860, 660)):
     return ie
 
 if __name__ == '__main__':
-    url = 'http://moni.51hupai.com:8081/'
+    url = 'http://moni.51hupai.org/'
     ie = open_ie(url)

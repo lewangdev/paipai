@@ -28,11 +28,11 @@ class App(wx.App):
 
         self.m_main_frame = Frame(None, self.version, (365,493))
         self.m_main_panel = ui.MainPanel(self.m_main_frame)
-        self.m_main_frame.Hide()
+        self.m_main_frame.Show()
 
         self.m_state_frame = Frame(None, u'投标号:53061106 当前状态', (311,425))
         self.m_state_panel = ui.StatePanel(self.m_state_frame)
-        self.m_state_frame.Hide()
+        self.m_state_frame.Show()
 
         self.SetTopWindow(self.m_entry_frame)
         return True
