@@ -1,4 +1,8 @@
-#coding=utf8
+# coding=utf-8
+""" 图片处理部分
+
+包括截图，图片转换，文字识别等部分
+"""
 
 import win32gui
 import win32ui
@@ -8,13 +12,15 @@ from ctypes import windll
 from PIL import Image
 
 def capture_window(hwnd, client_area_only=True):
-    '''
+    """指定窗口截图
+
     http://stackoverflow.com/questions/19695214/python-screenshot-of-inactive-window-printwindow-win32gui
-    '''
-    #l, t, r, b = win32gui.GetClientRect(hwnd)
-    l, t, r, b = win32gui.GetWindowRect(hwnd)
-    w = r - l
-    h = b - t
+    """
+    # 和 client_area_only=True 效果相同
+    #left, upper, right, lower = win32gui.GetClientRect(hwnd)
+    left, upper, right, lower = win32gui.GetWindowRect(hwnd)
+    w = right - left
+    h = lower - upper
 
     srcdc = win32gui.GetWindowDC(hwnd)
     memdc  = win32ui.CreateDCFromHandle(srcdc)
@@ -24,7 +30,7 @@ def capture_window(hwnd, client_area_only=True):
     bmp.CreateCompatibleBitmap(memdc, w, h)
     destdc.SelectObject(bmp)
 
-    #和 client_area_only=False 效果相同, 所以直接使用 PrintWindow
+    # 和 client_area_only=False 效果相同, 所以直接使用 PrintWindow
     #destdc.BitBlt((0, 0), (w, h), memdc, (0, 0), win32con.SRCCOPY)
     windll.user32.PrintWindow(hwnd,
             destdc.GetSafeHdc(),
@@ -45,7 +51,13 @@ def capture_window(hwnd, client_area_only=True):
     return im
 
 def capture_window_rect(hwnd, rect):
-    return capture_window(hwnd)
+    """区域截图
+
+    窗口 client area 部分相对位置区域截图
+    """
+    im_window =  capture_window(hwnd)
+    return im_window.crop()
+
 
 if __name__ == '__main__':
     hwnd = win32gui.GetForegroundWindow()
