@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print "%x" % (hwnd)
 
     for i in xrange(100):
-        im.capture_window(hwnd)
+        im.capture_window(hwnd, False)
         im.save('test_%s.bmp' % i, 'BMP')
         time.sleep(1)
 
