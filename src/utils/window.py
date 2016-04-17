@@ -28,13 +28,20 @@ def find_sub_hwnd(hwnd, win_classes):
     """
     assert type(win_classes) == list
     if len(win_classes) == 1:
-        return find_sub_hwnd_in_index(hwnd, win_classes[0][0], win_classes[0][1])
+        return find_sub_hwnd_in_index(hwnd,
+                win_classes[0][0],
+                win_classes[0][1])
     else:
-        hwnd = find_sub_hwnd_in_index(hwnd, win_classes[0][0], win_classes[0][1])
+        hwnd = find_sub_hwnd_in_index(hwnd,
+                win_classes[0][0],
+                win_classes[0][1])
         return find_sub_hwnd(hwnd, win_classes[1:])
 
 
 if __name__ == '__main__':
     ie_hwnd = 0x000c037c
-    hwnd = find_sub_hwnd(ie_hwnd, [("Frame Tab", 0), ("TabWindowClass", 0), ("Shell DocObject View", 0), ("Internet Explorer_Server", 0)])
+    hwnd = find_sub_hwnd(ie_hwnd, [("Frame Tab", 0),
+        ("TabWindowClass", 0),
+        ("Shell DocObject View", 0),
+        ("Internet Explorer_Server", 0)])
     print "%x" % (hwnd)
