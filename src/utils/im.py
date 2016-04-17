@@ -14,11 +14,11 @@ from PIL import Image
 def capture_window(hwnd, client_area_only=True):
     """指定窗口截图
 
-    http://stackoverflow.com/questions/19695214/python-screenshot-of-inactive-window-printwindow-win32gui
+    http://stackoverflow.com/questions/19695214/python-screenshot-of-inactive\
+            -window-printwindow-win32gui
     """
-    # 和 client_area_only=True 效果相同
-    left, upper, right, lower = win32gui.GetClientRect(hwnd)
-    #left, upper, right, lower = win32gui.GetWindowRect(hwnd)
+    left, upper, right, lower = win32gui.GetClientRect(hwnd) \
+            if client_area_only else  win32gui.GetWindowRect(hwnd)
     w = right - left
     h = lower - upper
 
@@ -30,11 +30,7 @@ def capture_window(hwnd, client_area_only=True):
     bmp.CreateCompatibleBitmap(memdc, w, h)
     destdc.SelectObject(bmp)
 
-    # 和 client_area_only=False 效果相同, 所以直接使用 PrintWindow
-    #destdc.BitBlt((0, 0), (w, h), memdc, (0, 0), win32con.SRCCOPY)
-    windll.user32.PrintWindow(hwnd,
-            destdc.GetSafeHdc(),
-            1 if client_area_only else 0)
+    destdc.BitBlt((0, 0), (w, h), memdc, (0, 0), win32con.SRCCOPY)
 
     bmp_info = bmp.GetInfo()
     bmp_bits = bmp.GetBitmapBits(True)
