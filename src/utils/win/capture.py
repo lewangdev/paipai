@@ -16,10 +16,10 @@ def capture_window(hwnd, client_area_only=True):
     http://stackoverflow.com/questions/19695214/python-screenshot-of-inactive\
             -window-printwindow-win32gui
     """
-    left, upper, right, lower = win32gui.GetWindowRect(hwnd)
+    left, top, right, bottom = win32gui.GetWindowRect(hwnd)
 
     w = right - left
-    h = lower - upper
+    h = bottom - top
 
     srcdc = win32gui.GetWindowDC(hwnd)
     memdc  = win32ui.CreateDCFromHandle(srcdc)
