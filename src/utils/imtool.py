@@ -1,22 +1,48 @@
-#coding=utf-8
+# coding=utf-8
+""" 图片处理
 
+"""
 from PIL import Image
 
-def bw(img):
-    '''转成黑白色
+
+def binarization(im, threshold=None, inverse=False):
+    '''对图片进行二值化操作
     '''
-    img = img.convert('L')
-    w,h = img.size
+    # 灰度处理
+    im = im.convert('L')
+
+    w, h = im.size
+
+    if threshold is None:
+        threshold = 0
+        for x in xrange(w):
+            for y in xrange(h):
+                threshold += im.getpixel((x, y))
+
+        threshold /= w * h
+
     for x in xrange(w):
         for y in xrange(h):
-            if (img.getpixel((x,y)) > 200):
-                img.putpixel((x,y), 0xFF)
+            if (im.getpixel((x, y)) > threshold):
+                im.putpixel((x, y), 0xFF if not inverse else 0x00)
             else:
-                img.putpixel((x,y), 0)
-    return img
+                im.putpixel((x, y), 0x00 if not inverse else 0xFF)
+    return im
 
-def crop(img):
-    '''裁剪到包括所有非FF色的最小矩形
+
+def find_images(im, pos_info):
+    """
+    获取所有指定位置和大小的图片
+    """
+    images = []
+    for p, w, h in pos_info:
+        left, top = p
+        images.append(im.crop((left, top, left + w, top + h)))
+    return images
+
+
+def crop_min_image(img):
+    '''裁剪到包括所有非FF色的最小矩形的图
     '''
     w, h = img.size
     pixdata = img.load()
@@ -71,8 +97,11 @@ def crop(img):
 
     return img.crop((left, top, right + 1, bottom + 1))
 
+def split_image(img):
+    """对图进行分片处理
 
-def split(img):
+    找到所有最小矩形色块
+    """
     w, h = img.size
     pixdata = img.load()
 
@@ -106,7 +135,7 @@ def split(img):
             right += 1
         if right > left:
             p = img.crop((left, top, right, bottom))
-            p = crop(p)
+            p = crop_min_image(p)
             pieces.append(p)
 
         left = right
@@ -136,33 +165,17 @@ def get_fingerprint(img):
     return "".join(matrix)
 
 if __name__ == '__main__':
-    #oimg = Image.open('trainning/t1.bmp')
-    #oimg = crop(oimg)
-    #oimg = bw(oimg)
-    #pieces = split(oimg)
-    #i = 0
-    #for p in pieces:
-    #    p.save("%s.bmp" % i, "BMP")
-    #    i += 1
-    chars = list("1234567890-:")
-    oimg = Image.open('trainning/normal.bmp')
-    oimg = crop(oimg)
-    oimg = bw(oimg)
-    pieces = split(oimg)
-    i = 0
-    model = {}
-    for p in pieces:
-        fp = get_fingerprint(p)
-        model[fp] = chars[i]
-        i += 1
-    oimg = Image.open('trainning/bold.bmp')
-    oimg = crop(oimg)
-    oimg = bw(oimg)
-    pieces = split(oimg)
-    i = 0
-    for p in pieces:
-        fp = get_fingerprint(p)
-        model[fp] = chars[i]
-        i += 1
-
-    print model
+    pos_info = [
+            ((110, 291), 62, 13),
+            ((139, 307), 62, 13),
+            ((123, 405), 83, 13),
+            ((152, 420), 83, 13),
+            ((267, 435), 83, 13),
+            ]
+    img = Image.open("2-1.png")
+    images = find_images(img, pos_info)
+    for i in xrange(len(images)):
+        #images[i].save('%s.png' % i)
+        image_pieces = split_image(binarization(images[i]))
+        for image_piece in image_pieces:
+            print get_fingerprint(image_piece)

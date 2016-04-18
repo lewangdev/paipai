@@ -1,27 +1,14 @@
 #coding=utf8
 import model
-import gen_model
+import imtool
 
-import sys
-
-def reco(fp):
-    return model.models.get(fp, '')
-
-def recofull(img):
+def recog(img):
+    image_pieces = imtool.split_image(imtool.binarization(img))
     text = []
-    img = gen_model.crop(img)
-    img = gen_model.bw(img)
-    pieces = gen_model.split(img)
-    for p in pieces:
-        fp = gen_model.get_fingerprint(p)
-        text.append(reco(fp))
+    for image_piece in image_pieces:
+        fp = imtool.get_fingerprint(image_piece)
+        text.append(model.models.get(fp, ''))
     return ''.join(text)
 
-
 if __name__ == '__main__':
-    ## usage
-    # python ocr.py img.bmp
-    ##
-    img = sys.argv[1]
-
-    print recofull(img)
+    pass
