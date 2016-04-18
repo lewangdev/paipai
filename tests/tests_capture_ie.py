@@ -6,7 +6,7 @@ import browser
 import time
 
 if __name__ == '__main__':
-    url = 'http://moni.51hupai.com:8081/'
+    url = 'http://moni.51hupai.com/'
     ie = browser.open(url)
 
     # wait until stateready

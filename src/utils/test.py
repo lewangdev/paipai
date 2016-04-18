@@ -14,8 +14,11 @@ if __name__ == '__main__':
     hwnd = window.find_sub_hwnd(ie.HWND, [("Frame Tab", 0)])
     print "%x" % (hwnd)
 
+    time.sleep(3)
+
     for i in xrange(100):
-        im.capture_window(hwnd, False)
-        im.save('test_%s.bmp' % i, 'BMP')
-        time.sleep(1)
+        image = im.capture_window(hwnd, False)
+        if image.getpixel((0,0)) > 0:
+            image = image.save('images/test_%s.bmp' % i, 'BMP')
+            time.sleep(0.05)
 
