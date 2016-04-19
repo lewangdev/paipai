@@ -7,3 +7,5 @@ build/build/
 .idea/
 src/utils/*.png
 src/utils/*.bmp
+src/utils/images/*.png
+src/utils/images/*.bmp

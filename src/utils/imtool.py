@@ -160,7 +160,7 @@ def get_martix(img):
         matrix.append(''.join(row))
     return matrix
 
-def get_fingerprint(img):
+def fingerprint(img):
     matrix = get_martix(img)
     return "".join(matrix)
 
@@ -178,4 +178,4 @@ if __name__ == '__main__':
         #images[i].save('%s.png' % i)
         image_pieces = split_image(binarization(images[i]))
         for image_piece in image_pieces:
-            print get_fingerprint(image_piece)
+            print fingerprint(image_piece)
