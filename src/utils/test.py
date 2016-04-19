@@ -8,8 +8,13 @@ from win.browser import open_ie
 from win.window import find_sub_hwnd
 
 import time
+import logging
 
 if __name__ == '__main__':
+    logging.basicConfig(
+            filename='test.log',
+            format='%(asctime)s %(levelname)s %(message)s',
+            level=logging.DEBUG)
     # 51hupai.org
     # (left, top), w, h
     pos_info = [
@@ -26,7 +31,6 @@ if __name__ == '__main__':
     #    ("Shell DocObject View", 0),
     #    ("Internet Explorer_Server", 0)])
     hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0)])
-    print "%x" % (hwnd)
 
     time.sleep(3)
 
@@ -37,7 +41,7 @@ if __name__ == '__main__':
         for j in xrange(len(images)):
             data.append(ocr.recog(images[j]))
         (attcount, limit, bidtime, price, pricetime) = tuple(data)
-        print ','.join(data)
+        logging.info(','.join(data))
         if bidtime == '11:29:59':
             break
         #time.sleep(0.25)

@@ -48,6 +48,8 @@ def capture_inactive_window(hwnd, client_area_only=True):
 
     http://stackoverflow.com/questions/19695214/python-screenshot-of-inactive\
             -window-printwindow-win32gui
+
+    需要做黑屏判断，printwindow失败会得到一个黑色的图
     """
     left, top, right, bottom = win32gui.GetWindowRect(hwnd)
 
