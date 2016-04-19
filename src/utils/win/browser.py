@@ -10,7 +10,7 @@ from win32com.client import DispatchEx
 import win32gui
 import win32con
 
-def open_ie(url, size=(860, 660)):
+def open_ie(url, size=(900, 680)):
     """打开IE浏览器"""
     width, height = size
 

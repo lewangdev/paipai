@@ -5,3 +5,5 @@
 .DS_Store
 build/build/
 .idea/
+src/utils/*.png
+src/utils/*.bmp
