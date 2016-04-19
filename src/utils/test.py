@@ -26,13 +26,15 @@ if __name__ == '__main__':
             ]
 
     ie = open_ie(url="http://moni.51hupai.org")
-    #hwnd = window.find_sub_hwnd(ie.HWND, [("Frame Tab", 0),
-    #    ("TabWindowClass", 0),
-    #    ("Shell DocObject View", 0),
-    #    ("Internet Explorer_Server", 0)])
-    hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0)])
+    time.sleep(5)
+    print "%x" % ie.HWND
+    hwnd = find_sub_hwnd(ie.hwnd, [("Frame Tab", 0),
+        ("TabWindowClass", 0),
+        ("Shell DocObject View", 0),
+        ("Internet Explorer_Server", 0)])
+    #hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0)])
+    print "%x" % hwnd
 
-    time.sleep(3)
 
     while True:
         img = capture_window(hwnd)

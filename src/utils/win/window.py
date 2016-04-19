@@ -39,7 +39,7 @@ def find_sub_hwnd(hwnd, win_classes):
 
 
 if __name__ == '__main__':
-    ie_hwnd = 0x000c037c
+    ie_hwnd = 0x000a041c
     hwnd = find_sub_hwnd(ie_hwnd, [("Frame Tab", 0),
         ("TabWindowClass", 0),
         ("Shell DocObject View", 0),
