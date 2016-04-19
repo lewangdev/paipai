@@ -30,13 +30,15 @@ if __name__ == '__main__':
 
     time.sleep(3)
 
-    for i in xrange(100):
+    while True:
         img = capture_window(hwnd)
         images = imtool.find_images(img, pos_info)
         data = []
         for j in xrange(len(images)):
-            images[j].save('%s-%s.png' % (i,j))
             data.append(ocr.recog(images[j]))
+        (attcount, limit, bidtime, price, pricetime) = tuple(data)
         print ','.join(data)
-        time.sleep(0.4)
+        if bidtime == '11:29:59':
+            break
+        #time.sleep(0.25)
 
