@@ -12,7 +12,8 @@ if __name__ == '__main__':
     models = {}
     for f in imagefiles:
         image = Image.open(f)
-        image_pieces = split_image(binarization(image))
+        bwimg = binarization(image)
+        image_pieces = split_image(bwimg)
         for i in xrange(len(image_pieces)):
             models[fingerprint(image_pieces[i])] = expected_text[i]
 
