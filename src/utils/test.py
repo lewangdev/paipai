@@ -3,7 +3,7 @@
 import imtool
 import ocr
 
-from win.capture import capture_window
+from win.capture import capture_inactive_window as capture_window
 from win.browser import open_ie
 from win.window import find_sub_hwnd
 

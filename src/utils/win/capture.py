@@ -82,6 +82,8 @@ def capture_inactive_window(hwnd, client_area_only=True):
     memdc.DeleteDC()
     win32gui.ReleaseDC(hwnd, srcdc)
 
+    windll.user32.UpdateWindow(hwnd)
+
     return im
 
 

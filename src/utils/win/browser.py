@@ -30,7 +30,8 @@ def open_ie(url, size=(900, 680)):
     ie.Navigate(url)
 
     win32gui.SetForegroundWindow(ie.HWND)
-    win32gui.SetWindowPos(ie.HWND, win32con.HWND_TOPMOST,
+    #win32gui.SetWindowPos(ie.HWND, win32con.HWND_TOPMOST,
+    win32gui.SetWindowPos(ie.HWND, 0,
             0, 0, width, height,
             win32con.SWP_NOACTIVATE |
             win32con.SWP_NOOWNERZORDER |
