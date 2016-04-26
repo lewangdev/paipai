@@ -10,3 +10,4 @@ src/utils/*.bmp
 src/utils/*.log
 src/utils/images/*.png
 src/utils/images/*.bmp
+man/
