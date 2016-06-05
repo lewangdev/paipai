@@ -34,22 +34,13 @@ class Frame(wx.Frame):
 class App(wx.App):
     def OnInit(self):
         #self.version = '13.35.01'
-        #self.m_entry_frame = Frame(None, self.version, (241,357))
-        #self.m_entry_panel = ui.EntryPanel(self.m_entry_frame)
-        #self.m_entry_frame.Show()
-
-        #self.m_main_frame = Frame(None, self.version, (365,493))
-        #self.m_main_panel = ui.MainPanel(self.m_main_frame)
-        #self.m_main_frame.Show()
-
-        self.m_state_frame = Frame(None, u'投标号:53061106 当前状态', (311,425))
-        self.m_state_panel = ui.StatePanel(self.m_state_frame)
-        self.m_state_frame.Show()
+        self.m_frame = Frame(None, u'投标号:53061106 当前状态', (507,486))
+        self.m_panel = ui.PaipaiPanel(self.m_frame)
+        self.m_frame.Show()
 
         # Connect Events
-        self.m_state_panel.m_hyperlink1.Bind(wx.EVT_HYPERLINK, self.m_hyperlink1OnHyperLink)
 
-        self.SetTopWindow(self.m_state_frame)
+        self.SetTopWindow(self.m_frame)
         return True
 
     # Virtual event handlers, overide them in your derived class
