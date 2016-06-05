@@ -5,6 +5,7 @@ import wx
 import sys
 import os
 import time
+from datetime import datetime
 import logging
 import win32gui
 import threading
@@ -40,73 +41,98 @@ class App(wx.App):
         self.m_frame.Show()
 
         # Connect Events
+        self.m_panel.m_button_start.Bind(wx.EVT_BUTTON, self.m_OnStart)
 
         self.SetTopWindow(self.m_frame)
         return True
 
     # Virtual event handlers, overide them in your derived class
-    def m_hyperlink1OnHyperLink(self, event):
-        moniter = Monitor()
+    def m_OnStart(self, event):
+        ie = open_ie(url="http://moni.51hupai.org")
+        time.sleep(5)
+        print "%x" % ie.HWND
+        hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0),
+            ("TabWindowClass", 0),
+            ("Shell DocObject View", 0),
+            ("Internet Explorer_Server", 0)])
+        moniter = Monitor(hwnd, self.m_panel)
         moniter.start()
 
 class Monitor(threading.Thread):
-    def __init__(self):
+    def __init__(self, hwnd, panel):
         super(Monitor, self).__init__()
-        # create a new thread or process
-        # 51hupai.org
-        # (left, top), w, h
+        self.hwnd = hwnd
+        self.panel = panel
+
     def run(self):
+        enter_key_down = True
         text_pos_info = [
                 ((125, 291), 62, 13),
                 ((139, 307), 62, 13),
                 ((123, 402), 83, 13),
                 ((152, 420), 83, 13),
-                ((183, 434), 83, 13),
+                ((182, 434), 84, 13),
                 ]
 
         controls_pos_info = dict(
                     text_custom_price = (632, 423),
-                    btn_set_price = (792, 428)
+                    btn_set_price = (792, 428),
+                    text_pincode = (605, 396),
+                    btn_submit = (520, 505)
                 )
-        ie = open_ie(url="http://moni.51hupai.org")
-        time.sleep(5)
-        print "%x" % ie.HWND
-        hwnd = find_sub_hwnd(ie.hwnd, [("Frame Tab", 0),
-            ("TabWindowClass", 0),
-            ("Shell DocObject View", 0),
-            ("Internet Explorer_Server", 0)])
-        #hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0)])
-        print "%x" % hwnd
 
         did = False
+        price_expected = None
         while True:
-            img = capture_window(hwnd)
+            img = capture_window(self.hwnd)
             images = imtool.find_images(img, text_pos_info)
             data = []
             for j in xrange(len(images)):
                 data.append(ocr.recog(images[j]))
-            (attcount, limit, bidtime, price, pricetime) = tuple(data)
+            (attcount, limit, remotetime, price, newpricetime) = tuple(data)
+
+            self.panel.m_text_localtime.SetValue(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            self.panel.m_text_remotetime.SetValue('%s %s' % (datetime.now().strftime('%Y-%m-%d'), remotetime))
+            self.panel.m_textl_newprice.SetValue('%s/%s' % (price, newpricetime))
+
             logging.info(','.join(data))
-            if bidtime == '11:29:59':
+            if remotetime == '11:29:59':
                 break
 
-            if int(bidtime.split(':')[2]) > 7 and not did:
+            if int(remotetime.split(':')[2]) >= 45 and not did:
+                self.panel.m_text_stat.SetValue(u'等待输入验证码')
                 did = True
                 # set mouse pos
                 x, y = controls_pos_info['text_custom_price']
                 print x, y
-                mouse_click(hwnd, x, y)
-                key_input(hwnd, "%s" % (int(price) + 700))
+                mouse_click(self.hwnd, x, y)
+                price_expected = int(price) + 700
+                key_input(self.hwnd, "%s" % price_expected)
                 time.sleep(0.1)
 
                 # 点击出价
                 x, y = controls_pos_info['btn_set_price']
                 print x, y
-                mouse_click(hwnd, x, y)
+                mouse_click(self.hwnd, x, y)
+                time.sleep(0.5)
+
+                # 光标放到校验码上面
+                x, y = controls_pos_info['text_pincode']
+                mouse_click(self.hwnd, x, y)
+
+            if did and enter_key_down and price_expected is not None:
+                if price_expected - int(price) <= 300:
+                    # 提交出价
+                    x, y = controls_pos_info['btn_submit']
+                    mouse_click(self.hwnd, x, y)
 
 def main():
     app = App()
     app.MainLoop()
 
 if __name__ == '__main__':
+    logging.basicConfig(
+            filename='paipai.log',
+            format='%(asctime)s %(levelname)s %(message)s',
+            level=logging.DEBUG)
     main()
