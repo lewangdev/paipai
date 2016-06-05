@@ -35,6 +35,6 @@ README
 ### 主界面
 
 <div style="text-align: center">
-    <img src="gui/sceenshot/main.png"/>
+    <img src="/aluckyapple/paipai/raw/master/gui/screenshot/main.png"/>
 </div>
 
