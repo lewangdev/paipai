@@ -57,7 +57,8 @@ class PaipaiPanel ( wx.Panel ):
 		self.m_staticText351.Wrap( -1 )
 		fgSizer16.Add( self.m_staticText351, 0, wx.ALL, 5 )
 		
-		self.m_radio_second_low = wx.RadioButton( self, wx.ID_ANY, u"最低成交价+", wx.Point( -1,-1 ), wx.DefaultSize, 0 )
+		self.m_radio_second_low = wx.RadioButton( self, wx.ID_ANY, u"最低成交价+", wx.Point( -1,-1 ), wx.DefaultSize, wx.RB_GROUP )
+		self.m_radio_second_low.SetValue( True ) 
 		fgSizer16.Add( self.m_radio_second_low, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 		
 		self.m_spin_second_low = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10000, 100 )
@@ -113,7 +114,8 @@ class PaipaiPanel ( wx.Panel ):
 		self.m_staticText3511.Wrap( -1 )
 		fgSizer161.Add( self.m_staticText3511, 0, wx.ALL, 5 )
 		
-		self.m_radio_third_low = wx.RadioButton( self, wx.ID_ANY, u"最低成交价+", wx.Point( -1,-1 ), wx.DefaultSize, wx.RB_SINGLE )
+		self.m_radio_third_low = wx.RadioButton( self, wx.ID_ANY, u"最低成交价+", wx.Point( -1,-1 ), wx.DefaultSize, wx.RB_GROUP )
+		self.m_radio_third_low.SetValue( True ) 
 		fgSizer161.Add( self.m_radio_third_low, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 		
 		self.m_spin_third_low = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10000, 100 )
@@ -172,7 +174,7 @@ class PaipaiPanel ( wx.Panel ):
 		self.m_spin_option_one_premillis = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 50,-1 ), wx.SP_ARROW_KEYS, 0, 1000, 500 )
 		fgSizer152.Add( self.m_spin_option_one_premillis, 0, 0, 5 )
 		
-		self.m_staticText1721 = wx.StaticText( self, wx.ID_ANY, u"豪秒", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText1721 = wx.StaticText( self, wx.ID_ANY, u"毫秒", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText1721.Wrap( -1 )
 		fgSizer152.Add( self.m_staticText1721, 0, wx.ALL, 5 )
 		
