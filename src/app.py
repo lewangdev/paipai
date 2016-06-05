@@ -33,8 +33,9 @@ class Frame(wx.Frame):
 
 class App(wx.App):
     def OnInit(self):
-        #self.version = '13.35.01'
-        self.m_frame = Frame(None, u'投标号:53061106 当前状态', (507,486))
+        self.version = '13.35.01'
+        self.name = u'拍牌小助手 - %s' % self.version
+        self.m_frame = Frame(None, self.name, (511, 506))
         self.m_panel = ui.PaipaiPanel(self.m_frame)
         self.m_frame.Show()
 

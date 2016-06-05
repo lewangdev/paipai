@@ -2,8 +2,6 @@ pyinstaller ../src/app.py ^
     --name=assistant ^
     --noconsole^
     --onefile ^
-    --distpath=../dist ^
-    --key=we3FeKcRVUun7Gul ^
-    --upx-dir=C:\upx391w\upx391w ^
-    --icon=../src/paipai.ico ^
+    --distpath=./dist ^
+    --icon=../src/resources/paipai.ico ^
     -p %PYTHONPATH%/Lib/site-packages/pil;

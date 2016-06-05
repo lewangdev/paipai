@@ -1,10 +1,10 @@
 # -*- mode: python -*-
 
-block_cipher = pyi_crypto.PyiBlockCipher(key='we3FeKcRVUun7Gul')
+block_cipher = None
 
 
 a = Analysis(['..\\src\\app.py'],
-             pathex=['C:\\Python27/Lib/site-packages/pil', '', 'G:\\build'],
+             pathex=['C:\\Python27/Lib/site-packages/pil', '', 'F:\\build'],
              binaries=None,
              datas=None,
              hiddenimports=[],
@@ -21,9 +21,8 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          [('\\resources\\paipai.ico', '\\resources\\paipai.ico', '\\resources\\paipai.ico')],
           name='assistant',
           debug=False,
           strip=None,
           upx=True,
-          console=False , icon='G:\\resources\\paipai.ico')
+          console=False , icon='..\\src\\resources\\paipai.ico')
