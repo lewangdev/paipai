@@ -2,6 +2,7 @@
 *.swp
 *.pyc
 *.exe
+*.log
 .DS_Store
 build/build/
 .idea/
@@ -10,4 +11,5 @@ src/utils/*.bmp
 src/utils/*.log
 src/utils/images/*.png
 src/utils/images/*.bmp
+src/*.log
 man/

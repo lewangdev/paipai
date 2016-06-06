@@ -73,6 +73,11 @@ class Monitor(threading.Thread):
                 ((152, 420), 83, 13),
                 ((182, 434), 84, 13),
                 ]
+        pincode_pos_info = dict(
+                login = ((747, 386), 120, 30), # Todo 登录验证码
+                first = ((747, 386), 120, 30), # Todo 首轮警示价验证码
+                edit = ((747, 386), 120, 54) # 修改出价阶段
+                )
 
         controls_pos_info = dict(
                     text_custom_price = (632, 423),
