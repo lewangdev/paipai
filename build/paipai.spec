@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 
-block_cipher = None
+block_cipher = pyi_crypto.PyiBlockCipher(key='we3FeKcRVUun7Gul')
 
 
 a = Analysis(['..\\src\\app.py'],
@@ -21,7 +21,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='assistant',
+          name='paipai',
           debug=False,
           strip=None,
           upx=True,

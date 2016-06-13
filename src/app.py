@@ -1,6 +1,5 @@
 #coding=utf-8
 
-import ui
 import wx
 import sys
 import os
@@ -10,6 +9,7 @@ import logging
 import win32gui
 import threading
 
+from gui import ui
 from utils import imtool
 from utils import ocr
 
