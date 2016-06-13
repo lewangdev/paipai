@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           name='paipai',
-          debug=False,
+          debug=True,
           strip=None,
           upx=True,
-          console=False , icon='..\\src\\resources\\paipai.ico')
+          console=True , icon='..\\src\\resources\\paipai.ico')

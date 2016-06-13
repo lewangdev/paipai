@@ -11,8 +11,7 @@ README
 ## release 步骤
 
 * 安装 pyinstaller
-* build/buildwin32.bat
-* [-]字节码压缩和混淆
+* ```pyinstaller paipai.spec```
 
 ## TODO
 
