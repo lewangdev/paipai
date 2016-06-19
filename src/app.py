@@ -48,7 +48,8 @@ class App(wx.App):
 
     # Virtual event handlers, overide them in your derived class
     def m_OnStart(self, event):
-        ie = open_ie(url="http://moni.51hupai.org")
+        #ie = open_ie(url="http://moni.51hupai.org")
+        ie = open_ie(url="https://paimai2.alltobid.com/bid/2016061801/bid.htm")
         time.sleep(5)
         print "%x" % ie.HWND
         hwnd = find_sub_hwnd(ie.HWND, [("Frame Tab", 0),
@@ -80,7 +81,7 @@ class Monitor(threading.Thread):
                 )
 
         controls_pos_info = dict(
-                    text_custom_price = (632, 423),
+                    text_custom_price = (734, 427),
                     btn_set_price = (792, 428),
                     text_pincode = (605, 396),
                     btn_submit = (520, 505)
@@ -89,47 +90,50 @@ class Monitor(threading.Thread):
         did = False
         price_expected = None
         while True:
-            img = capture_window(self.hwnd)
-            images = imtool.find_images(img, text_pos_info)
-            data = []
-            for j in xrange(len(images)):
-                data.append(ocr.recog(images[j]))
-            (attcount, limit, remotetime, price, newpricetime) = tuple(data)
+            try:
+                img = capture_window(self.hwnd)
+                images = imtool.find_images(img, text_pos_info)
+                data = []
+                for j in xrange(len(images)):
+                    data.append(ocr.recog(images[j]))
+                (attcount, limit, remotetime, price, newpricetime) = tuple(data)
 
-            self.panel.m_text_localtime.SetValue(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-            self.panel.m_text_remotetime.SetValue('%s %s' % (datetime.now().strftime('%Y-%m-%d'), remotetime))
-            self.panel.m_textl_newprice.SetValue('%s/%s' % (price, newpricetime))
+                self.panel.m_text_localtime.SetValue(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                self.panel.m_text_remotetime.SetValue('%s %s' % (datetime.now().strftime('%Y-%m-%d'), remotetime))
+                self.panel.m_textl_newprice.SetValue('%s/%s' % (price, newpricetime))
 
-            logging.info(','.join(data))
-            if remotetime == '11:29:59':
-                break
+                logging.info(','.join(data))
+                if remotetime == '11:30:00':
+                    break
 
-            if int(remotetime.split(':')[2]) >= 45 and not did:
-                self.panel.m_text_stat.SetValue(u'等待输入验证码')
-                did = True
-                # set mouse pos
-                x, y = controls_pos_info['text_custom_price']
-                print x, y
-                mouse_click(self.hwnd, x, y)
-                price_expected = int(price) + 700
-                key_input(self.hwnd, "%s" % price_expected)
-                time.sleep(0.1)
-
-                # 点击出价
-                x, y = controls_pos_info['btn_set_price']
-                print x, y
-                mouse_click(self.hwnd, x, y)
-                time.sleep(0.5)
-
-                # 光标放到校验码上面
-                x, y = controls_pos_info['text_pincode']
-                mouse_click(self.hwnd, x, y)
-
-            if did and enter_key_down and price_expected is not None:
-                if price_expected - int(price) <= 300:
-                    # 提交出价
-                    x, y = controls_pos_info['btn_submit']
+                if int(remotetime.split(':')[2]) >= 45:
+                    self.panel.m_text_stat.SetValue(u'等待输入验证码')
+                    did = True
+                    # set mouse pos
+                    x, y = controls_pos_info['text_custom_price']
+                    print x, y
                     mouse_click(self.hwnd, x, y)
+                    price_expected = int(price) + 800
+                    key_input(self.hwnd, "%s" % price_expected)
+                    time.sleep(0.1)
+
+                    # 点击出价
+                    x, y = controls_pos_info['btn_set_price']
+                    print x, y
+                    mouse_click(self.hwnd, x, y)
+                    time.sleep(0.5)
+
+                    # 光标放到校验码上面
+                    x, y = controls_pos_info['text_pincode']
+                    mouse_click(self.hwnd, x, y)
+
+                if did and enter_key_down and price_expected is not None:
+                    if price_expected - int(price) <= 300:
+                        # 提交出价
+                        x, y = controls_pos_info['btn_submit']
+                        mouse_click(self.hwnd, x, y)
+            except:
+                pass
 
 def main():
     app = App()
