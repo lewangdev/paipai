@@ -34,6 +34,6 @@ README
 ### 主界面
 
 <div style="text-align: center">
-    <img src="/aluckyapple/paipai/raw/master/gui/screenshot/main.png"/>
+    <img src="https://raw.githubusercontent.com/thisiswangle/paipai/master/gui/screenshot/main.png"/>
 </div>
 
